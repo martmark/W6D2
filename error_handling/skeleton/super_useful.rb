@@ -1,6 +1,8 @@
 # PHASE 2
 def convert_to_int(str)
   Integer(str)
+  rescue ArgumentError 
+    nil
 end
 
 # PHASE 3
@@ -10,24 +12,43 @@ def reaction(maybe_fruit)
   if FRUITS.include? maybe_fruit
     puts "OMG, thanks so much for the #{maybe_fruit}!"
   else 
-    raise StandardError 
+    raise ArgumentError.new "#{maybe_fruit} is not a fruit!"
   end 
 end
 
 def feed_me_a_fruit
+  begin
   puts "Hello, I am a friendly monster. :)"
 
   puts "Feed me a fruit! (Enter the name of a fruit:)"
   maybe_fruit = gets.chomp
+ 
   reaction(maybe_fruit) 
+  rescue ArgumentError => e
+    puts e.message
+    puts "Can i have a cup of coffee?"
+    input = gets.chomp
+    if input.upcase == "coffee".upcase
+      retry
+    end
+  end
 end  
 
 # PHASE 4
 class BestFriend
   def initialize(name, yrs_known, fav_pastime)
-    @name = name
-    @yrs_known = yrs_known
-    @fav_pastime = fav_pastime
+    
+    if yrs_known < 5
+      raise "Can't be best friends; not enough years"
+    elsif name.length < 1
+      raise "You should have a name"
+    elsif fav_pastime.length < 1
+      raise "Best friends have pastimes, no?"
+    else
+      @name = name
+      @yrs_known = yrs_known
+      @fav_pastime = fav_pastime
+    end
   end
 
   def talk_about_friendship
